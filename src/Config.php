@@ -39,7 +39,7 @@ class Config
      */
     public static function apiKey()
     {
-        return config('services.stripe.secret') ?: null;
+        return config('cashier.secret') ?: null;
     }
 
     /**

@@ -80,7 +80,10 @@ class ServiceProvider extends BaseServiceProvider
         $router->aliasMiddleware('stripe.verify', Http\Middleware\VerifySignature::class);
 
         /** Migrations and Factories */
-        $this->loadStripeMigrations();
+        $this->publishes([
+            __DIR__ . '/../database/factories' => database_path('factories'),
+            __DIR__ . '/../database/migrations' => database_path('migrations'),
+        ], 'stripe-migrations');
     }
 
     /**
@@ -202,29 +205,5 @@ class ServiceProvider extends BaseServiceProvider
 
         $events->listen(ClientWillSend::class, Listeners\LogClientRequests::class);
         $events->listen(ClientReceivedResult::class, Listeners\LogClientResults::class);
-    }
-
-    /**
-     * Load or publish package migrations and factories.
-     *
-     * If this package is running migrations, we load them. Otherwise we
-     * make them publishable so that the developer can publish them and modify
-     * them as needed.
-     *
-     * @return void
-     */
-    private function loadStripeMigrations()
-    {
-        if (LaravelStripe::$runMigrations) {
-            $this->loadMigrationsFrom(__DIR__ . '/../database/migrations');
-            $this->app->afterResolving(ModelFactory::class, function (ModelFactory $factory) {
-                $factory->load(__DIR__ . '/../database/factories');
-            });
-        } else {
-            $this->publishes([
-                __DIR__ . '/../database/factories' => database_path('factories'),
-                __DIR__ . '/../database/migrations' => database_path('migrations'),
-            ], 'stripe-migrations');
-        }
     }
 }

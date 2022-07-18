@@ -31,7 +31,7 @@ class CreateStripeAccountsAndEvents extends Migration
     public function up()
     {
         Schema::create('stripe_accounts', function (Blueprint $table) {
-            $table->string('id', 255)->primary()->collate(LaravelStripe::ID_DATABASE_COLLATION);
+            $table->string('id', 255)->primary()->collation(LaravelStripe::ID_DATABASE_COLLATION);
             $table->timestamps();
             $table->softDeletes();
             $table->json('business_profile')->nullable();
@@ -57,9 +57,9 @@ class CreateStripeAccountsAndEvents extends Migration
         });
 
         Schema::create('stripe_events', function (Blueprint $table) {
-            $table->string('id', 255)->primary()->collate(LaravelStripe::ID_DATABASE_COLLATION);
+            $table->string('id', 255)->primary()->collation(LaravelStripe::ID_DATABASE_COLLATION);
             $table->timestamps();
-            $table->string('account_id', 255)->nullable()->collate(LaravelStripe::ID_DATABASE_COLLATION);
+            $table->string('account_id', 255)->nullable()->collation(LaravelStripe::ID_DATABASE_COLLATION);
             $table->date('api_version');
             $table->timestamp('created');
             $table->boolean('livemode');
