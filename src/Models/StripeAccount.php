@@ -31,14 +31,9 @@ class StripeAccount extends Model implements AccountInterface
     use ConnectedAccount;
     use SoftDeletes;
 
-    /**
-     * @var bool
-     */
+
     public $incrementing = false;
 
-    /**
-     * @var array
-     */
     protected $fillable = [
         'id',
         'business_profile',
@@ -58,9 +53,7 @@ class StripeAccount extends Model implements AccountInterface
         'type',
     ];
 
-    /**
-     * @var array
-     */
+
     protected $casts = [
         'business_profile' => 'json',
         'capabilities' => 'json',
@@ -74,38 +67,25 @@ class StripeAccount extends Model implements AccountInterface
         'tos_acceptance' => 'json',
     ];
 
-    /**
-     * @var array
-     */
     protected $dates = [
         'deleted_at',
     ];
 
-    /**
-     * @return HasMany
-     */
-    public function events()
+    public function events(): HasMany
     {
-        $model = Config::webhookModel();
-
         return $this->hasMany(
-            get_class($model),
-            $model->getAccountIdentifierName(),
+            Config::webhookModel(),
+            Config::webhookModel()->getAccountIdentifierName(),
             $this->getStripeAccountIdentifierName()
         );
     }
 
-    /**
-     * @return BelongsTo
-     */
-    public function owner()
+    public function owner(): BelongsTo
     {
-        $model = Config::connectOwner();
-
         return $this->belongsTo(
-            get_class($model),
-            $this->getStripeOwnerIdentifierName(),
-            $model->getStripeIdentifierName(),
+            Config::connectOwner(),
+            'owner_id',
+            Config::connectOwner()->getStripeIdentifierName(),
             'owner'
         );
     }

@@ -68,11 +68,4 @@ interface AccountInterface
      * @return string|int
      */
     public function getStripeOwnerIdentifier();
-
-    /**
-     * Get the name for the Stripe account owner identifier.
-     *
-     * @return string
-     */
-    public function getStripeOwnerIdentifierName();
 }

@@ -105,20 +105,7 @@ trait ConnectedAccount
      */
     public function getStripeOwnerIdentifier()
     {
-        return $this->{$this->getStripeOwnerIdentifierName()};
-    }
-
-    /**
-     * Get the user id column name.
-     *
-     * If this method returns null, the user will not be stored
-     * when an access token is fetched.
-     *
-     * @return string|null
-     */
-    public function getStripeOwnerIdentifierName()
-    {
-        return 'owner_id';
+        return $this->owner_id;
     }
 
     /**

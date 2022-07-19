@@ -64,7 +64,7 @@ class Adapter implements AdapterInterface
         $account = $this->findWithTrashed($accountId) ?: $this->newInstance($accountId);
         $account->{$this->model->getStripeRefreshTokenName()} = $refreshToken;
         $account->{$this->model->getStripeTokenScopeName()} = $scope;
-        $account->{$this->model->getStripeOwnerIdentifierName()} = $owner->getStripeIdentifier();
+        $account->owner_id = $owner->getStripeIdentifier();
 
         if ($account->exists && $this->softDeletes()) {
             $account->restore();
