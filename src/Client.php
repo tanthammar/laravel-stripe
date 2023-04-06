@@ -25,7 +25,6 @@ use InvalidArgumentException;
 
 class Client
 {
-
     /**
      * @var Dispatcher
      */
@@ -34,7 +33,7 @@ class Client
     /**
      * Client constructor.
      *
-     * @param Dispatcher $events
+     * @param  Dispatcher  $events
      */
     public function __construct(Dispatcher $events)
     {
@@ -42,14 +41,14 @@ class Client
     }
 
     /**
-     * @param string $class
-     * @param string $method
-     * @param mixed ...$args
+     * @param  string  $class
+     * @param  string  $method
+     * @param  mixed  ...$args
      * @return mixed
      */
     public function __invoke($class, $method, ...$args)
     {
-        if (!is_callable("{$class}::{$method}")) {
+        if (! is_callable("{$class}::{$method}")) {
             throw new InvalidArgumentException(sprintf('Cannot class %s method %s', $class, $method));
         }
 
@@ -69,12 +68,11 @@ class Client
      *
      * @param $class
      * @param $method
-     * @param array $args
+     * @param  array  $args
      * @return mixed
      */
     protected function execute($class, $method, array $args)
     {
         return call_user_func_array("{$class}::{$method}", $args);
     }
-
 }

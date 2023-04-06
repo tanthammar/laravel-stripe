@@ -19,7 +19,6 @@ namespace CloudCreativity\LaravelStripe\Contracts\Connect;
 
 interface AccountInterface
 {
-
     /**
      * Get the Stripe account id for the connected account.
      *

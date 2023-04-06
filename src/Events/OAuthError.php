@@ -22,7 +22,6 @@ use Illuminate\Queue\SerializesModels;
 
 class OAuthError extends AbstractOAuthEvent
 {
-
     use SerializesModels;
 
     /**
@@ -74,11 +73,11 @@ class OAuthError extends AbstractOAuthEvent
     /**
      * OAuthError constructor.
      *
-     * @param string $code
-     * @param string $description
-     * @param AccountOwnerInterface $owner
-     * @param string $view
-     * @param array $data
+     * @param  string  $code
+     * @param  string  $description
+     * @param  AccountOwnerInterface  $owner
+     * @param  string  $view
+     * @param  array  $data
      */
     public function __construct($code, $description, $owner, $view, $data = [])
     {
@@ -88,11 +87,10 @@ class OAuthError extends AbstractOAuthEvent
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function defaults()
     {
         return ['error' => $this->error, 'message' => $this->message];
     }
-
 }

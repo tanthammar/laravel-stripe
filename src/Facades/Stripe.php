@@ -31,7 +31,6 @@ use Stripe\StripeObject;
 /**
  * Class Stripe
  *
- * @package CloudCreativity\LaravelStripe
  *
  * @method static Route webhook(string $uri, string $signingSecret)
  * @method static Route oauth(string $uri)
@@ -40,17 +39,15 @@ use Stripe\StripeObject;
  * @method static AccountInterface connectAccount(string $accountId)
  * @method static AuthorizeUrl authorizeUrl(array $options = null)
  * @method static void log(string $message, StripeObject|mixed $data, array $context = [])
- *
  * @method static void assertInvoked(string $class, string $method, \Closure $args = null)
  * @method static void assertInvokedAt(int $index, string $class, string $method, \Closure $args = null)
  */
 class Stripe extends Facade
 {
-
     /**
      * Fake static calls to Stripe.
      *
-     * @param StripeObject ...$queue
+     * @param  StripeObject  ...$queue
      * @return void
      */
     public static function fake(StripeObject ...$queue)

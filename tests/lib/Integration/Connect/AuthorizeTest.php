@@ -30,7 +30,6 @@ use Stripe\StripeObject;
 
 class AuthorizeTest extends TestCase
 {
-
     /**
      * @var TestUser
      */
@@ -84,6 +83,7 @@ class AuthorizeTest extends TestCase
             $this->assertTrue($model->is($event->account), 'event account');
             $this->assertSame($token, $event->token, 'event token');
             $this->assertTrue($this->user->is($event->owner), 'event owner');
+
             return true;
         });
 
@@ -132,6 +132,7 @@ class AuthorizeTest extends TestCase
             $this->assertTrue($model->is($event->account), 'event account');
             $this->assertSame($token, $event->token, 'event token');
             $this->assertTrue($this->user->is($event->owner), 'event owner');
+
             return true;
         });
     }
@@ -181,6 +182,7 @@ class AuthorizeTest extends TestCase
             $this->assertTrue($model->is($event->account), 'event account');
             $this->assertSame($token, $event->token, 'event token');
             $this->assertTrue($this->user->is($event->owner), 'event owner');
+
             return true;
         });
     }

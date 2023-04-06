@@ -27,7 +27,6 @@ use Stripe\Refund;
 
 class RefundRepository extends AbstractRepository
 {
-
     use Concerns\All;
     use Concerns\Retrieve;
     use Concerns\HasMetadata;
@@ -35,8 +34,8 @@ class RefundRepository extends AbstractRepository
     /**
      * Create a full refund.
      *
-     * @param Charge|string $charge
-     * @param iterable $params
+     * @param  Charge|string  $charge
+     * @param  iterable  $params
      * @return Refund
      */
     public function full($charge, iterable $params = []): Refund
@@ -51,9 +50,9 @@ class RefundRepository extends AbstractRepository
     /**
      * Create a partial refund.
      *
-     * @param Charge|string $charge
-     * @param int $amount
-     * @param iterable|array $params
+     * @param  Charge|string  $charge
+     * @param  int  $amount
+     * @param  iterable|array  $params
      * @return Refund
      */
     public function partial($charge, int $amount, iterable $params = []): Refund
@@ -68,8 +67,8 @@ class RefundRepository extends AbstractRepository
     /**
      * Create a refund.
      *
-     * @param Charge|string $charge
-     * @param iterable|array $params
+     * @param  Charge|string  $charge
+     * @param  iterable|array  $params
      * @return Refund
      */
     public function create($charge, iterable $params = []): Refund
@@ -94,8 +93,8 @@ class RefundRepository extends AbstractRepository
      *
      * This request only accepts the `metadata` as an argument.
      *
-     * @param string $id
-     * @param Collection|iterable|array $metadata
+     * @param  string  $id
+     * @param  Collection|iterable|array  $metadata
      * @return Refund
      */
     public function update(string $id, iterable $metadata): Refund
@@ -111,11 +110,10 @@ class RefundRepository extends AbstractRepository
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function fqn(): string
     {
         return Refund::class;
     }
-
 }

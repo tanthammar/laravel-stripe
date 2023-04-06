@@ -26,7 +26,6 @@ use Stripe\Event;
 
 class ConnectWebhook extends Webhook
 {
-
     /**
      * The stored Stripe account.
      *
@@ -40,10 +39,11 @@ class ConnectWebhook extends Webhook
     /**
      * ConnectWebhook constructor.
      *
-     * @param Event $webhook
-     * @param AccountInterface|StripeAccount|mixed|null $account
-     * @param StripeEvent|mixed $model
-     * @param array $config
+     * @param  Event  $webhook
+     * @param  AccountInterface|StripeAccount|mixed|null  $account
+     * @param  StripeEvent|mixed  $model
+     * @param  array  $config
+     *
      * @todo PHP7 account should be `?AccountInterface` and model not optional.
      */
     public function __construct(
@@ -52,7 +52,7 @@ class ConnectWebhook extends Webhook
         $model = null,
         array $config = []
     ) {
-        if (!Arr::get($webhook, 'account')) {
+        if (! Arr::get($webhook, 'account')) {
             throw new InvalidArgumentException('Expecting a Stripe Connect webhook.');
         }
 
@@ -61,7 +61,7 @@ class ConnectWebhook extends Webhook
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function connect()
     {
@@ -79,7 +79,7 @@ class ConnectWebhook extends Webhook
     /**
      * Is the webhook for the supplied account?
      *
-     * @param AccountInterface|string $account
+     * @param  AccountInterface|string  $account
      * @return bool
      */
     public function accountIs($account)
@@ -94,11 +94,11 @@ class ConnectWebhook extends Webhook
     /**
      * Is the webhook not for the specified account?
      *
-     * @param AccountInterface|string $account
+     * @param  AccountInterface|string  $account
      * @return bool
      */
     public function accountIsNot($account)
     {
-        return !$this->accountIs($account);
+        return ! $this->accountIs($account);
     }
 }

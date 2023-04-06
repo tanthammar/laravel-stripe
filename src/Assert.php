@@ -22,23 +22,23 @@ use Illuminate\Support\Str;
 
 class Assert
 {
-
     const ACCOUNT_ID_PREFIX = 'acct_';
+
     const CHARGE_ID_PREFIX = 'ch_';
 
     /**
-     * @param string $expected
+     * @param  string  $expected
      *      the expected prefix.
      * @param $id
      *      the id.
      */
     public static function id($expected, $id)
     {
-        if (!is_string($id)) {
+        if (! is_string($id)) {
             throw new UnexpectedValueException('Expecting a string id.');
         }
 
-        if (!Str::startsWith($id, $expected)) {
+        if (! Str::startsWith($id, $expected)) {
             throw new UnexpectedValueException("Expecting a Stripe id with prefix '{$expected}', received '{$id}'.");
         }
     }
@@ -51,11 +51,11 @@ class Assert
      */
     public static function supportedCurrency($currency)
     {
-        if (!is_string($currency) || empty($currency)) {
+        if (! is_string($currency) || empty($currency)) {
             throw new UnexpectedValueException('Expecting a non-empty string.');
         }
 
-        if (!Config::currencies()->containsStrict($currency)) {
+        if (! Config::currencies()->containsStrict($currency)) {
             throw new UnexpectedValueException("Expecting a valid currency, received: {$currency}");
         }
     }
@@ -66,13 +66,14 @@ class Assert
      * @param $currency
      * @param $amount
      * @return void
+     *
      * @see https://stripe.com/docs/currencies#minimum-and-maximum-charge-amounts
      */
     public static function chargeAmount($currency, $amount)
     {
         self::supportedCurrency($currency);
 
-        if (!is_int($amount)) {
+        if (! is_int($amount)) {
             throw new UnexpectedValueException('Expecting an integer.');
         }
 
@@ -88,11 +89,12 @@ class Assert
      *
      * @param $amount
      * @return void
+     *
      * @see https://stripe.com/docs/currencies#zero-decimal
      */
     public static function zeroDecimal($amount)
     {
-        if (!is_int($amount) || 0 > $amount) {
+        if (! is_int($amount) || 0 > $amount) {
             throw new UnexpectedValueException('Expecting a positive integer.');
         }
     }

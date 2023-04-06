@@ -26,11 +26,10 @@ use Stripe\Account;
 
 class Connector
 {
-
     /**
      * Get a resource repository by resource type.
      *
-     * @param string $resource
+     * @param  string  $resource
      * @return AbstractRepository
      */
     public function __invoke($resource): AbstractRepository
@@ -38,7 +37,7 @@ class Connector
         $method = Str::camel($resource);
         $repository = null;
 
-        if (method_exists($this, $method) && !in_array($method, ['retrieve'])) {
+        if (method_exists($this, $method) && ! in_array($method, ['retrieve'])) {
             return call_user_func([$this, $method]);
         }
 
@@ -132,5 +131,4 @@ class Connector
     {
         return null;
     }
-
 }

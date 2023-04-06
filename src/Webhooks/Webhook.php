@@ -24,7 +24,6 @@ use Stripe\Event;
 
 class Webhook
 {
-
     use SerializesModels;
 
     /**
@@ -49,9 +48,9 @@ class Webhook
     /**
      * Webhook constructor.
      *
-     * @param Event $webhook
-     * @param StripeEvent|mixed $model
-     * @param array $config
+     * @param  Event  $webhook
+     * @param  StripeEvent|mixed  $model
+     * @param  array  $config
      */
     public function __construct(Event $webhook, $model, array $config = [])
     {
@@ -104,12 +103,12 @@ class Webhook
     /**
      * Is the webhook not the specified type.
      *
-     * @param string $type
+     * @param  string  $type
      * @return bool
      */
     public function isNot($type)
     {
-        return !$this->is($type);
+        return ! $this->is($type);
     }
 
     /**
@@ -141,5 +140,4 @@ class Webhook
     {
         return Arr::get($this->config, 'job');
     }
-
 }

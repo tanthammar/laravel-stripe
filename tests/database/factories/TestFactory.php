@@ -22,7 +22,6 @@ use Illuminate\Database\Eloquent\Factory;
 use Illuminate\Support\Str;
 
 /** @var Factory $factory */
-
 $factory->define(TestAccount::class, function (Faker $faker) {
     return [
         'id' => $faker->unique()->lexify('acct_????????????'),

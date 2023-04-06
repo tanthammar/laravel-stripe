@@ -24,8 +24,6 @@ use Illuminate\Database\Eloquent\Model;
 
 class Connector extends BaseConnector
 {
-
-
     /**
      * @var AccountInterface|Model
      */
@@ -39,7 +37,7 @@ class Connector extends BaseConnector
     /**
      * Connector constructor.
      *
-     * @param AccountInterface $account
+     * @param  AccountInterface  $account
      */
     public function __construct(AccountInterface $account)
     {
@@ -49,7 +47,7 @@ class Connector extends BaseConnector
     /**
      * Is the connector for the provided account?
      *
-     * @param AccountInterface|string $accountId
+     * @param  AccountInterface|string  $accountId
      * @return bool
      */
     public function is($accountId)
@@ -72,7 +70,7 @@ class Connector extends BaseConnector
     /**
      * Deauthorize the connected account.
      *
-     * @param iterable|array|null $options
+     * @param  iterable|array|null  $options
      * @return void
      */
     public function deauthorize($options = null)

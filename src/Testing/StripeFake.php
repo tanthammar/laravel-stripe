@@ -22,13 +22,12 @@ use CloudCreativity\LaravelStripe\Testing\Concerns\MakesStripeAssertions;
 
 class StripeFake extends StripeService
 {
-
     use MakesStripeAssertions;
 
     /**
      * StripeFake constructor.
      *
-     * @param ClientFake $client
+     * @param  ClientFake  $client
      */
     public function __construct(ClientFake $client)
     {

@@ -22,7 +22,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateStripeAccountsAndEvents extends Migration
 {
-
     /**
      * Run the migration.
      *

@@ -22,7 +22,6 @@ use CloudCreativity\LaravelStripe\Contracts\Connect\AccountOwnerInterface;
 
 class OAuthSuccess extends AbstractOAuthEvent
 {
-
     /**
      * @var string
      */
@@ -36,11 +35,11 @@ class OAuthSuccess extends AbstractOAuthEvent
     /**
      * OAuthSuccess constructor.
      *
-     * @param string $code
-     * @param string|null $scope
-     * @param AccountOwnerInterface $owner
-     * @param string $view
-     * @param array $data
+     * @param  string  $code
+     * @param  string|null  $scope
+     * @param  AccountOwnerInterface  $owner
+     * @param  string  $view
+     * @param  array  $data
      */
     public function __construct($code, $scope, $owner, $view, $data = [])
     {
@@ -70,11 +69,10 @@ class OAuthSuccess extends AbstractOAuthEvent
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function defaults()
     {
         return ['scope' => $this->scope];
     }
-
 }

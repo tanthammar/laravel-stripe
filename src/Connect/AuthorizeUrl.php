@@ -23,9 +23,10 @@ use Stripe\OAuth;
 
 class AuthorizeUrl implements Arrayable
 {
-
     const EXPRESS_CONNECT_BASE = 'https://connect.stripe.com/express';
+
     const STRIPE_LANDING_LOGIN = 'login';
+
     const STRIPE_LANDING_REGISTER = 'register';
 
     /**
@@ -77,8 +78,8 @@ class AuthorizeUrl implements Arrayable
     /**
      * AuthorizeUrl constructor.
      *
-     * @param string $state
-     * @param array|null $options
+     * @param  string  $state
+     * @param  array|null  $options
      */
     public function __construct($state, array $options = null)
     {
@@ -108,8 +109,8 @@ class AuthorizeUrl implements Arrayable
     /**
      * Redirect to the authorize URL.
      *
-     * @param int $status
-     * @param array $headers
+     * @param  int  $status
+     * @param  array  $headers
      * @return RedirectResponse
      */
     public function redirect($status = 302, array $headers = [])
@@ -164,7 +165,7 @@ class AuthorizeUrl implements Arrayable
      *
      * Defaults to the `redirect_uri` in your application settings if not provided.
      *
-     * @param string|null $uri
+     * @param  string|null  $uri
      * @return $this
      */
     public function redirectUri($uri)
@@ -216,7 +217,7 @@ class AuthorizeUrl implements Arrayable
     /**
      * Set key/value pairs for the `stripe_user`.
      *
-     * @param iterable|array $user
+     * @param  iterable|array  $user
      * @return $this
      */
     public function user($user)
@@ -227,7 +228,7 @@ class AuthorizeUrl implements Arrayable
     /**
      * Set key/value pairs for the `stripe_user`.
      *
-     * @param iterable|array $user
+     * @param  iterable|array  $user
      * @return $this
      */
     public function stripeUser($user)
@@ -258,7 +259,7 @@ class AuthorizeUrl implements Arrayable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function toArray()
     {
@@ -266,5 +267,4 @@ class AuthorizeUrl implements Arrayable
             return is_null($value);
         })->toArray();
     }
-
 }

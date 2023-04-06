@@ -26,7 +26,6 @@ use Illuminate\Queue\SerializesModels;
 
 class TestWebhookJob implements ShouldQueue
 {
-
     use InteractsWithQueue, SerializesModels, Queueable;
 
     /**
@@ -37,7 +36,7 @@ class TestWebhookJob implements ShouldQueue
     /**
      * TestWebhookJob constructor.
      *
-     * @param Webhook|ConnectWebhook $webhook
+     * @param  Webhook|ConnectWebhook  $webhook
      */
     public function __construct($webhook)
     {

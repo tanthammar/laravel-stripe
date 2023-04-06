@@ -18,7 +18,6 @@
 namespace CloudCreativity\LaravelStripe;
 
 use CloudCreativity\LaravelStripe\Contracts\Connect\AccountOwnerInterface;
-use CloudCreativity\LaravelStripe\Models\StripeAccount;
 use CloudCreativity\LaravelStripe\Models\StripeEvent;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -28,142 +27,46 @@ use Stripe\Webhook;
 
 class Config
 {
-
-    /**
-     * Get the Stripe API Key.
-     *
-     * The default Laravel installation has this in the `services.stripe` config,
-     * so we expect it to be there.
-     *
-     * @return string|null
-     */
-    public static function apiKey()
-    {
-        return config('cashier.secret') ?: null;
-    }
-
-    /**
-     * Get the Stripe API version used by this application.
-     *
-     * @return string|null
-     */
-    public static function apiVersion()
-    {
-        return self::get('api_version') ?: null;
-    }
-
-    /**
-     * Get the Stripe Connect client id.
-     *
-     * @return string|null
-     */
-    public static function clientId()
-    {
-        return self::get('client_id') ?: null;
-    }
-
-    /**
-     * Get the Connect account model.
-     *
-     * @return StripeAccount|mixed
-     */
-    public static function connectModel()
-    {
-        $class = self::fqn('connect.model');
-
-        return new $class;
-    }
-
-    /**
-     * Get the Connect account owner model.
-     *
-     * @return AccountOwnerInterface|Model
-     */
-    public static function connectOwner()
+    /** Get Connect account owner model. */
+    public static function connectOwner(): Model|AccountOwnerInterface|RuntimeException
     {
         $class = self::fqn('connect.owner');
 
         return new $class;
     }
 
-    /**
-     * Get the Connect queue config.
-     *
-     * @return array
-     */
-    public static function connectQueue()
+    /** Get the Connect queue config. */
+    public static function connectQueue(): array
     {
         return [
-            'connection' => self::get('connect.queue_connection'),
-            'queue' => self::get('connect.queue'),
+            'connection' => config('stripe.connect.queue_connection'),
+            'queue' => config('stripe.connect.queue'),
         ];
     }
 
-    /**
-     * Get the view to render on OAuth success.
-     *
-     * @return string
-     */
-    public static function connectSuccessView()
-    {
-        return self::get('connect.views.success');
-    }
-
-    /**
-     * @return string
-     */
-    public static function connectErrorView()
-    {
-        return self::get('connect.views.error');
-    }
-
-    /**
-     * @return StripeEvent|mixed
-     */
-    public static function webhookModel()
+    public static function webhookModel(): StripeEvent
     {
         $class = self::fqn('webhooks.model');
 
         return new $class;
     }
 
-    /**
-     * Get a webhook signing secret by key.
-     *
-     * @param string $name
-     * @return string
-     */
-    public static function webhookSigningSecrect($name)
+    /** Get a webhook signing secret by key. */
+    public static function webhookSigningSecrect(string $name): RuntimeException|string
     {
-        if (!$secret = self::get("webhooks.signing_secrets.{$name}")) {
-            throw new RuntimeException("Webhook signing secret does not exist: {$name}");
+        if (! $secret = config("stripe.webhooks.signing_secrets.$name")) {
+            throw new RuntimeException("Webhook signing secret does not exist: $name");
         }
 
-        if (!is_string($secret)|| empty($secret)) {
-            throw new RuntimeException("Invalid webhook signing secret: {$name}");
+        if (! is_string($secret) || empty($secret)) {
+            throw new RuntimeException("Invalid webhook signing secret: $name");
         }
 
         return $secret;
     }
 
-    /**
-     * Get the webhook signature tolerance.
-     *
-     * @return int
-     */
-    public static function webhookTolerance()
-    {
-        return self::get('webhooks.signature_tolerance', Webhook::DEFAULT_TOLERANCE);
-    }
-
-    /**
-     * Get the queue config for the named webhook event.
-     *
-     * @param string $type
-     * @param bool $connect
-     * @return array
-     */
-    public static function webhookQueue($type, $connect = false)
+    /** Get the queue config for the named webhook event. */
+    public static function webhookQueue(string $type, bool $connect = false): array
     {
         $path = sprintf(
             'webhooks.%s.%s',
@@ -172,10 +75,10 @@ class Config
         );
 
         return array_replace([
-            'connection' => self::get('webhooks.default_queue_connection'),
-            'queue' => self::get('webhooks.default_queue'),
+            'connection' => config('stripe.webhooks.default_queue_connection'),
+            'queue' => config('stripe.webhooks.default_queue'),
             'job' => null,
-        ], (array) self::get($path));
+        ], (array) config("stripe.$path"));
     }
 
     /**
@@ -186,9 +89,9 @@ class Config
      *
      * @return Collection
      */
-    public static function currencies()
+    public static function currencies(): Collection
     {
-        $currencies = collect(self::get('currencies'))->map(function ($currency) {
+        $currencies = collect(config('stripe.currencies'))->map(function ($currency) {
             return strtolower($currency);
         });
 
@@ -199,77 +102,31 @@ class Config
         return $currencies;
     }
 
-    /**
-     * Get the minimum charge amount for the specified currency.
-     *
-     * @param string $currency
-     * @return int
-     */
-    public static function minimum($currency)
+    /** Get the minimum charge amount for the specified currency. */
+    public static function minimum(string $currency): int
     {
-        if (!is_string($currency) || empty($currency)) {
+        if (! is_string($currency) || empty($currency)) {
             throw new InvalidArgumentException('Expecting a non-empty string.');
         }
 
         $currency = strtoupper($currency);
-        $min = collect(self::get('minimum_charge_amounts'))->get($currency);
+        $min = collect(config('stripe.minimum_charge_amounts'))->get($currency);
 
-        if (!is_int($min) || 1 > $min) {
+        if (! is_int($min) || 1 > $min) {
             throw new RuntimeException("Invalid minimum {$currency} charge amount for currency.");
         }
 
         return $min;
     }
 
-    /**
-     * @return string
-     */
-    public static function logLevel()
+    private static function fqn(string $key): RuntimeException|string
     {
-        return self::get('log.level');
-    }
+        $fqn = config("stripe.$key");
 
-    /**
-     * Get the exclusion paths for logging a particular type.
-     *
-     * @return array
-     */
-    public static function logExclude()
-    {
-        return (array) self::get("log.exclude");
-    }
-
-    /**
-     * @param string $key
-     * @param mixed|null $default
-     * @return mixed
-     */
-    private static function get($key, $default = null)
-    {
-        return config("stripe.{$key}", $default);
-    }
-
-    /**
-     * @param string $key
-     * @return string
-     */
-    private static function fqn($key)
-    {
-        $fqn = self::get($key) ?: null;
-
-        if (!class_exists($fqn)) {
+        if (! class_exists($fqn)) {
             throw new RuntimeException("Configured class at 'stripe.{$key}' does not exist: {$fqn}");
         }
 
         return $fqn;
-    }
-
-    /**
-     * @param $key
-     * @return bool
-     */
-    private static function has($key)
-    {
-        return config()->has("stripe.{$key}");
     }
 }

@@ -24,7 +24,6 @@ use Stripe\StripeObject;
 
 trait MakesStripeAssertions
 {
-
     /**
      * @var ClientFake
      */
@@ -33,7 +32,7 @@ trait MakesStripeAssertions
     /**
      * Queue Stripe responses.
      *
-     * @param StripeObject ...$objects
+     * @param  StripeObject  ...$objects
      * @return void
      */
     public function withQueue(StripeObject ...$objects)
@@ -48,7 +47,7 @@ trait MakesStripeAssertions
      *      the expected fully qualified class name.
      * @param $method
      *      the expected static method.
-     * @param Closure|null $args
+     * @param  Closure|null  $args
      *      an optional closure to assert that the call received the correct arguments.
      */
     public function assertInvoked($class, $method, Closure $args = null)
@@ -61,24 +60,24 @@ trait MakesStripeAssertions
     /**
      * Assert the next Stripe call in the history.
      *
-     * @param int $index
+     * @param  int  $index
      *      the index in the history of Stripe calls.
      * @param $class
      *      the expected fully qualified class name.
      * @param $method
      *      the expected static method.
-     * @param Closure|null $args
+     * @param  Closure|null  $args
      *      an optional closure to assert that the call received the correct arguments.
      */
     public function assertInvokedAt($index, $class, $method, Closure $args = null)
     {
-        if (!$history = $this->stripeClient->at($index)) {
+        if (! $history = $this->stripeClient->at($index)) {
             Assert::fail("No Stripe call at index {$index}.");
         }
 
         Assert::assertSame(
-            $class . '::' . $method,
-            $history['class'] . '::' . $history['method'],
+            $class.'::'.$method,
+            $history['class'].'::'.$history['method'],
             "Stripe {$index}: class and method"
         );
 
@@ -89,5 +88,4 @@ trait MakesStripeAssertions
             );
         }
     }
-
 }

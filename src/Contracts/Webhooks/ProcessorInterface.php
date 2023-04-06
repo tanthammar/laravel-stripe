@@ -22,7 +22,6 @@ use Stripe\Event;
 
 interface ProcessorInterface
 {
-
     /**
      * Receive a Stripe webhook.
      *
@@ -33,11 +32,9 @@ interface ProcessorInterface
      * Therefore the process method should do the minimum required and delay timely
      * processing to a later point. E.g. adding a job to an asynchronous queue.
      *
-     * @param Event $event
-     * @return void
      * @see https://stripe.com/docs/webhooks/best-practices#acknowledge-events-immediately
      */
-    public function receive(Event $event);
+    public function receive(Event $event): void;
 
     /**
      * Has the Stripe webhook been received?
@@ -46,20 +43,10 @@ interface ProcessorInterface
      * Stripe advise to guard against duplicated event receipts by making event
      * processing idempotent.
      *
-     * @param Event $event
-     * @return bool
      * @see https://stripe.com/docs/webhooks/best-practices#duplicate-events
      */
-    public function didReceive(Event $event);
+    public function didReceive(Event $event): bool;
 
-    /**
-     * Dispatch a processed webhook.
-     *
-     * @param Event $event
-     * @param StripeEvent|mixed $model
-     *      the stored webhook.
-     * @return void
-     */
-    public function dispatch(Event $event, $model);
-
+    /** Dispatch a processed webhook. */
+    public function dispatch(Event $webhook, ?StripeEvent $model = null): void;
 }

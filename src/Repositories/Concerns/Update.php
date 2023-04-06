@@ -23,14 +23,13 @@ use Stripe\StripeObject;
 
 trait Update
 {
-
     use HasMetadata;
 
     /**
      * Update a Stripe object.
      *
-     * @param string $id
-     * @param iterable $params
+     * @param  string  $id
+     * @param  iterable  $params
      * @return StripeObject
      */
     public function update(string $id, iterable $params = []): StripeObject

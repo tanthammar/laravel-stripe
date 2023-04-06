@@ -21,7 +21,6 @@ use Illuminate\Support\Facades\Schema;
 
 class CreateTestTables extends Migration
 {
-
     /**
      * Run the migration.
      *

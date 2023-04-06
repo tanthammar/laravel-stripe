@@ -17,32 +17,28 @@
 
 namespace CloudCreativity\LaravelStripe\Connect;
 
-use CloudCreativity\LaravelStripe\Config;
-use Illuminate\Contracts\Auth\Authenticatable;
+use CloudCreativity\LaravelStripe\Models\StripeAccount;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use JetBrains\PhpStorm\Pure;
-use LogicException;
-use function get_class;
 
 trait OwnsStripeAccounts
 {
-
     /** Get the unique identifier for the Stripe account owner. */
-    #[Pure] public function getStripeIdentifier(): int|string
+    #[Pure]
+    public function getStripeIdentifier(): int|string
     {
         return $this->{$this->getKeyName()};
     }
 
-
-    /**
-     * @return HasMany
-     */
-    public function stripeAccounts(): HasMany
-    {
-        return $this->hasMany(
-            Config::connectModel(),
-            'owner_id',
-            $this->{$this->getKeyName()}
-        );
-    }
+       /**
+        * @return HasMany
+        */
+       public function stripeAccounts(): HasMany
+       {
+           return $this->hasMany(
+               StripeAccount::class,
+               'owner_id',
+               $this->{$this->getKeyName()}
+           );
+       }
 }

@@ -23,7 +23,6 @@ use Illuminate\Queue\SerializesModels;
 
 abstract class AbstractOAuthEvent
 {
-
     use SerializesModels;
 
     /**
@@ -57,9 +56,9 @@ abstract class AbstractOAuthEvent
     /**
      * AbstractConnectEvent constructor.
      *
-     * @param AccountOwnerInterface $owner
-     * @param string $view
-     * @param array $data
+     * @param  AccountOwnerInterface  $owner
+     * @param  string  $view
+     * @param  array  $data
      */
     public function __construct(AccountOwnerInterface $owner, $view, $data = [])
     {
@@ -69,8 +68,8 @@ abstract class AbstractOAuthEvent
     }
 
     /**
-     * @param array|string $key
-     * @param mixed|null $value
+     * @param  array|string  $key
+     * @param  mixed|null  $value
      * @return $this
      */
     public function with($key, $value = null)

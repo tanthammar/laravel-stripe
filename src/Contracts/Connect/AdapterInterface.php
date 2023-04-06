@@ -21,7 +21,6 @@ use Stripe\Account;
 
 interface AdapterInterface
 {
-
     /**
      * Find a connected account by its Stripe id.
      *
@@ -43,12 +42,13 @@ interface AdapterInterface
      * We also pass the token scope, so that you can store whether you have
      * read_only or read_write access to the Stripe account.
      *
-     * @param string $accountId
-     * @param string $refreshToken
-     * @param string $scope
-     * @param AccountOwnerInterface|null $owner
+     * @param  string  $accountId
+     * @param  string  $refreshToken
+     * @param  string  $scope
+     * @param  AccountOwnerInterface|null  $owner
      *      the user associated with the OAuth process.
      * @return AccountInterface
+     *
      * @see https://stripe.com/docs/connect/standard-accounts#token-request
      */
     public function store($accountId, $refreshToken, $scope, AccountOwnerInterface $owner);
@@ -56,8 +56,8 @@ interface AdapterInterface
     /**
      * Update an account from a Stripe account resource.
      *
-     * @param AccountInterface $account
-     * @param Account $resource
+     * @param  AccountInterface  $account
+     * @param  Account  $resource
      *      the Stripe account resource.
      * @return void
      */
@@ -66,7 +66,7 @@ interface AdapterInterface
     /**
      * Remove an account when it is de-authorized.
      *
-     * @param AccountInterface $account
+     * @param  AccountInterface  $account
      * @return void
      */
     public function remove(AccountInterface $account);

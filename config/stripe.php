@@ -122,19 +122,19 @@ return [
         'default_queue_connection' => env('STRIPE_WEBHOOKS_QUEUE_CONNECTION'),
         'default_queue' => env('STRIPE_WEBHOOKS_QUEUE'),
         'account' => [
-//            'charge_refunded' => [
-//                'job' => \App\RefundOrder::class,
-//            ],
-//            'payment_intent_succeeded' => [
-//                'connection' => env('QUEUE_HIGH_PRIORITY_CONNECTION'),
-//                'queue' => env('QUEUE_HIGH_PRIORITY'),
-//                'job' => \App\FulfillOrder::class,
-//            ],
+            //            'charge_refunded' => [
+            //                'job' => \App\RefundOrder::class,
+            //            ],
+            //            'payment_intent_succeeded' => [
+            //                'connection' => env('QUEUE_HIGH_PRIORITY_CONNECTION'),
+            //                'queue' => env('QUEUE_HIGH_PRIORITY'),
+            //                'job' => \App\FulfillOrder::class,
+            //            ],
         ],
         'connect' => [
-//            'payment_intent_succeeded' => [
-//                'queue' => env('QUEUE_HIGH_PRIORITY'),
-//            ],
+            //            'payment_intent_succeeded' => [
+            //                'queue' => env('QUEUE_HIGH_PRIORITY'),
+            //            ],
         ],
     ],
 
@@ -152,7 +152,7 @@ return [
     |
     */
     'log' => [
-        'level' => env('STRIPE_LOG_LEVEL'),
+        'level' => env('STRIPE_LOG_LEVEL', 'debug'),
         'exclude' => [
             'payment_intent' => ['client_secret'],
         ],

@@ -29,11 +29,11 @@ use CloudCreativity\LaravelStripe\Listeners\DispatchAuthorizeJob;
 use CloudCreativity\LaravelStripe\Listeners\DispatchWebhookJob;
 use CloudCreativity\LaravelStripe\Listeners\RemoveAccountOnDeauthorize;
 use CloudCreativity\LaravelStripe\Log\Logger;
+use CloudCreativity\LaravelStripe\Models\StripeAccount;
 use CloudCreativity\LaravelStripe\Webhooks\Processor;
 use Illuminate\Contracts\Bus\Dispatcher;
 use Illuminate\Contracts\Events\Dispatcher as Events;
 use Illuminate\Contracts\Foundation\Application;
-use Illuminate\Database\Eloquent\Factory as ModelFactory;
 use Illuminate\Routing\Router;
 use Illuminate\Support\ServiceProvider as BaseServiceProvider;
 use Psr\Log\LoggerInterface;
@@ -42,20 +42,13 @@ use Stripe\Stripe;
 
 class ServiceProvider extends BaseServiceProvider
 {
-
-    /**
-     * Boot services.
-     *
-     * @param Router $router
-     * @param Events $events
-     * @return void
-     */
-    public function boot(Router $router, Events $events)
+    /** Boot services. */
+    public function boot(Router $router, Events $events): void
     {
-        Stripe::setApiKey(Config::apiKey());
-        Stripe::setClientId(Config::clientId());
+        Stripe::setApiKey(config('cashier.secret'));
+        Stripe::setClientId(config('stripe.client_id'));
 
-        if ($version = Config::apiVersion()) {
+        if ($version = config('stripe.api_version')) {
             Stripe::setApiVersion($version);
         }
 
@@ -65,12 +58,12 @@ class ServiceProvider extends BaseServiceProvider
 
         /** Config */
         $this->publishes([
-            __DIR__ . '/../config/stripe.php' => config_path('stripe.php'),
+            __DIR__.'/../config/stripe.php' => config_path('stripe.php'),
         ], 'stripe');
 
         /** Brand Assets */
         $this->publishes([
-            __DIR__ . '/../resources' => public_path('vendor/stripe'),
+            __DIR__.'/../resources' => public_path('vendor/stripe'),
         ], 'stripe-brand');
 
         /** Commands */
@@ -81,17 +74,13 @@ class ServiceProvider extends BaseServiceProvider
 
         /** Migrations and Factories */
         $this->publishes([
-            __DIR__ . '/../database/factories' => database_path('factories'),
-            __DIR__ . '/../database/migrations' => database_path('migrations'),
+            __DIR__.'/../database/factories' => database_path('factories'),
+            __DIR__.'/../database/migrations' => database_path('migrations'),
         ], 'stripe-migrations');
     }
 
-    /**
-     * Bind services into the service container.
-     *
-     * @return void
-     */
-    public function register()
+    /** Bind services into the service container. */
+    public function register(): void
     {
         /** Service */
         $this->app->singleton(StripeService::class);
@@ -105,24 +94,20 @@ class ServiceProvider extends BaseServiceProvider
 
         /** Logger */
         $this->app->singleton(Logger::class, function (Application $app) {
-            $level = Config::logLevel();
+            $level = config('stripe.log.level');
 
             return new Logger(
                 $level ? $app->make(LoggerInterface::class) : new NullLogger(),
                 $level,
-                Config::logExclude()
+                config('stripe.log.exclude', [])
             );
         });
 
         $this->app->alias(Logger::class, 'stripe.log');
     }
 
-    /**
-     * Bind the Stripe Connect implementation into the service container.
-     *
-     * @return void
-     */
-    private function bindConnect()
+    /** Bind the Stripe Connect implementation into the service container. */
+    private function bindConnect(): void
     {
         $this->app->singleton(AdapterInterface::class, function (Application $app) {
             return $app->make(LaravelStripe::$connect);
@@ -131,7 +116,7 @@ class ServiceProvider extends BaseServiceProvider
         $this->app->alias(AdapterInterface::class, 'stripe.connect');
 
         $this->app->bind(Adapter::class, function () {
-            return new Adapter(Config::connectModel());
+            return new Adapter(new StripeAccount);
         });
 
         $this->app->bind(StateProviderInterface::class, function (Application $app) {
@@ -139,24 +124,15 @@ class ServiceProvider extends BaseServiceProvider
         });
     }
 
-    /**
-     * Boot the Connect implementation.
-     *
-     * @param Events $events
-     * @return void
-     */
-    private function bootConnect(Events $events)
+    /** Boot the "Connect" implementation. */
+    private function bootConnect(Events $events): void
     {
         $events->listen(OAuthSuccess::class, DispatchAuthorizeJob::class);
         $events->listen(AccountDeauthorized::class, RemoveAccountOnDeauthorize::class);
     }
 
-    /**
-     * Bind the webhook implementation into the service container.
-     *
-     * @return void
-     */
-    private function bindWebhooks()
+    /** Bind the webhook implementation into the service container. */
+    private function bindWebhooks(): void
     {
         $this->app->singleton(ProcessorInterface::class, function (Application $app) {
             return $app->make(LaravelStripe::$webhooks);
@@ -174,30 +150,20 @@ class ServiceProvider extends BaseServiceProvider
         });
     }
 
-    /**
-     * Boot the webhook implementation.
-     *
-     * @param Events $events
-     * @return void
-     */
-    private function bootWebhooks(Events $events)
+    /** Boot the webhook implementation. */
+    private function bootWebhooks(Events $events): void
     {
         $events->listen('stripe.webhooks', DispatchWebhookJob::class);
         $events->listen('stripe.connect.webhooks', DispatchWebhookJob::class);
     }
 
-    /**
-     * Boot the logging implementation.
-     *
-     * @param Events $events
-     * @return void
-     */
-    private function bootLogging(Events $events)
+    /** Boot the logging implementation. */
+    private function bootLogging(Events $events): void
     {
         Stripe::setLogger(app(LoggerInterface::class));
 
         $this->app->afterResolving(StripeService::class, function () {
-            app(Logger::class)->log("Service booted.", [
+            app(Logger::class)->log('Service booted.', [
                 'api_key' => substr(Stripe::getApiKey(), 3, 4),
                 'api_version' => Stripe::getApiVersion(),
             ]);

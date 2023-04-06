@@ -24,19 +24,18 @@ use Stripe\Account;
 
 class AccountRepository extends AbstractRepository
 {
-
     use Concerns\All;
     use Concerns\Update;
 
     /**
-     * @param string $type
-     * @param iterable $params
+     * @param  string  $type
+     * @param  iterable  $params
      *      additional optional parameters.
      * @return Account
      */
     public function create(string $type = 'custom', iterable $params = []): Account
     {
-        if (!is_string($type) || empty($type)) {
+        if (! is_string($type) || empty($type)) {
             throw new InvalidArgumentException('Expecting a non-empty string.');
         }
 
@@ -51,12 +50,12 @@ class AccountRepository extends AbstractRepository
      * If the id is not provided, the account associated with this
      * repository is returned.
      *
-     * @param string|null $id
+     * @param  string|null  $id
      * @return Account
      */
     public function retrieve(string $id = null): Account
     {
-        if (!is_string($id) && !is_null($id)) {
+        if (! is_string($id) && ! is_null($id)) {
             throw new InvalidArgumentException('Expecting a string or null.');
         }
 
@@ -68,11 +67,10 @@ class AccountRepository extends AbstractRepository
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function fqn(): string
     {
         return Account::class;
     }
-
 }

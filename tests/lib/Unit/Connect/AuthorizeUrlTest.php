@@ -24,7 +24,6 @@ use Stripe\Util\Util;
 
 class AuthorizeUrlTest extends TestCase
 {
-
     /**
      * @var AuthorizeUrl
      */
@@ -94,14 +93,14 @@ class AuthorizeUrlTest extends TestCase
     }
 
     /**
-     * @param array $expected
-     * @param string $method
-     * @param mixed|null $value
+     * @param  array  $expected
+     * @param  string  $method
+     * @param  mixed|null  $value
      * @dataProvider valueProvider
      */
     public function testStandard(array $expected, $method, $value = null)
     {
-        $args = !is_null($value) ? [$value] : [];
+        $args = ! is_null($value) ? [$value] : [];
         $result = call_user_func_array([$this->url, $method], $args);
 
         $this->assertSame($this->url, $result, "{$method} is fluent");
@@ -109,16 +108,16 @@ class AuthorizeUrlTest extends TestCase
     }
 
     /**
-     * @param array $expected
-     * @param string $method
-     * @param mixed|null $value
+     * @param  array  $expected
+     * @param  string  $method
+     * @param  mixed|null  $value
      * @dataProvider valueProvider
      */
     public function testExpress(array $expected, $method, $value = null)
     {
         $this->assertSame($this->url, $this->url->express(), 'express is fluent');
 
-        $args = !is_null($value) ? [$value] : [];
+        $args = ! is_null($value) ? [$value] : [];
         $result = call_user_func_array([$this->url, $method], $args);
 
         $this->assertSame($this->url, $result, "{$method} is fluent");
@@ -126,9 +125,9 @@ class AuthorizeUrlTest extends TestCase
     }
 
     /**
-     * @param string $uri
-     * @param array $params
-     * @param string $message
+     * @param  string  $uri
+     * @param  array  $params
+     * @param  string  $message
      * @return void
      */
     private function assertUrl($uri, array $params, $message = '')
@@ -142,7 +141,7 @@ class AuthorizeUrlTest extends TestCase
 
         $params['client_id'] = 'my_client_id';
 
-        $expected = $uri . '?' . Util::encodeParameters($params);
+        $expected = $uri.'?'.Util::encodeParameters($params);
 
         $this->assertSame($expected, (string) $this->url, $message);
     }

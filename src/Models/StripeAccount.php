@@ -27,10 +27,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StripeAccount extends Model implements AccountInterface
 {
-
     use ConnectedAccount;
     use SoftDeletes;
-
 
     public $incrementing = false;
 
@@ -52,7 +50,6 @@ class StripeAccount extends Model implements AccountInterface
         'tos_acceptance',
         'type',
     ];
-
 
     protected $casts = [
         'business_profile' => 'json',
@@ -83,9 +80,9 @@ class StripeAccount extends Model implements AccountInterface
     public function owner(): BelongsTo
     {
         return $this->belongsTo(
-            Config::connectOwner(),
+            config('stripe.connect.owner'),
             'owner_id',
-            Config::connectOwner()->getStripeIdentifierName(),
+            config('stripe.connect.owner')->getKeyName(),
             'owner'
         );
     }

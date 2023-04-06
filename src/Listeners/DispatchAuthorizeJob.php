@@ -23,11 +23,10 @@ use CloudCreativity\LaravelStripe\Jobs\FetchUserCredentials;
 
 class DispatchAuthorizeJob
 {
-
     /**
      * Handle the event.
      *
-     * @param OAuthSuccess $event
+     * @param  OAuthSuccess  $event
      * @return void
      */
     public function handle(OAuthSuccess $event)

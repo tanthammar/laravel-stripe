@@ -28,13 +28,12 @@ use CloudCreativity\LaravelStripe\Webhooks\Verifier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Queue;
-use PHPUnit\Framework\MockObject\MockObject;
 use Illuminate\Support\Facades\Route;
+use PHPUnit\Framework\MockObject\MockObject;
 use Stripe\Exception\SignatureVerificationException;
 
 class ReceiveTest extends TestCase
 {
-
     /**
      * @var MockObject
      */
@@ -96,6 +95,7 @@ class ReceiveTest extends TestCase
             $this->assertSame('stripe_connection', $job->connection, 'job connection');
             $this->assertTrue($expected->is($job->event), 'job event');
             $this->assertEquals($this->event, $job->payload, 'job payload');
+
             return true;
         });
 
@@ -146,6 +146,7 @@ class ReceiveTest extends TestCase
             $this->assertNull($job->connection, 'job connection');
             $this->assertTrue($expected->is($job->event), 'job event');
             $this->assertEquals($this->event, $job->payload, 'job payload');
+
             return true;
         });
     }
@@ -170,6 +171,7 @@ class ReceiveTest extends TestCase
             $this->assertNull($job->connection, 'job connection');
             $this->assertTrue($expected->is($job->event), 'job event');
             $this->assertEquals($this->event, $job->payload, 'job payload');
+
             return true;
         });
     }
@@ -192,6 +194,7 @@ class ReceiveTest extends TestCase
             $this->assertSame('Invalid.', $event->message, 'message');
             $this->assertSame('Header', $event->header, 'header');
             $this->assertSame('foobar', $event->signingSecret, 'signing secret');
+
             return true;
         });
     }
@@ -206,5 +209,4 @@ class ReceiveTest extends TestCase
 
         Queue::assertNotPushed(ProcessWebhook::class);
     }
-
 }

@@ -22,7 +22,6 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class SignatureVerificationFailed implements Arrayable
 {
-
     /**
      * @var string
      */
@@ -43,9 +42,9 @@ class SignatureVerificationFailed implements Arrayable
     /**
      * SignatureVerificationFailed constructor.
      *
-     * @param string $message
-     * @param string $header
-     * @param string $signingSecret
+     * @param  string  $message
+     * @param  string  $header
+     * @param  string  $signingSecret
      */
     public function __construct($message, $header, $signingSecret)
     {
@@ -63,7 +62,7 @@ class SignatureVerificationFailed implements Arrayable
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function toArray()
     {
@@ -73,5 +72,4 @@ class SignatureVerificationFailed implements Arrayable
             'signing_secret' => $this->signingSecret,
         ];
     }
-
 }

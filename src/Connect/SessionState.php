@@ -23,7 +23,6 @@ use Illuminate\Http\Request;
 
 class SessionState implements StateProviderInterface
 {
-
     /**
      * @var Session
      */
@@ -37,8 +36,8 @@ class SessionState implements StateProviderInterface
     /**
      * SessionState constructor.
      *
-     * @param Session $session
-     * @param Request $request
+     * @param  Session  $session
+     * @param  Request  $request
      */
     public function __construct(Session $session, Request $request)
     {
@@ -47,7 +46,7 @@ class SessionState implements StateProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function get()
     {
@@ -55,7 +54,7 @@ class SessionState implements StateProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function check($value)
     {
@@ -63,11 +62,10 @@ class SessionState implements StateProviderInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function user()
     {
         return $this->request->user();
     }
-
 }

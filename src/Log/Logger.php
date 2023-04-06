@@ -23,7 +23,6 @@ use Psr\Log\LoggerInterface;
 
 class Logger
 {
-
     /**
      * @var LoggerInterface
      */
@@ -42,10 +41,10 @@ class Logger
     /**
      * Logger constructor.
      *
-     * @param LoggerInterface $log
-     * @param string|null $level
+     * @param  LoggerInterface  $log
+     * @param  string|null  $level
      *      the log level, defaults to 'debug'.
-     * @param array $exclude
+     * @param  array  $exclude
      *      mapping of Stripe objects and paths that should be excluded from logging.
      */
     public function __construct(LoggerInterface $log, $level = null, array $exclude = [])
@@ -58,26 +57,26 @@ class Logger
     /**
      * Log a message at the configured level.
      *
-     * @param string $message
-     * @param array $context
+     * @param  string  $message
+     * @param  array  $context
      * @return void
      */
     public function log($message, array $context = [])
     {
-        $this->log->log($this->level, 'Stripe: ' . $message, $context);
+        $this->log->log($this->level, 'Stripe: '.$message, $context);
     }
 
     /**
      * Encode data into an error message.
      *
-     * @param string $message
-     * @param mixed $data
-     * @param array $context
+     * @param  string  $message
+     * @param  mixed  $data
+     * @param  array  $context
      * @return void
      */
     public function encode($message, $data, array $context = [])
     {
-        $message .= ':' . PHP_EOL . $this->toJson($data);
+        $message .= ':'.PHP_EOL.$this->toJson($data);
 
         $this->log($message, $context);
     }
@@ -85,7 +84,7 @@ class Logger
     /**
      * Encode a Stripe object for a log message.
      *
-     * @param mixed $data
+     * @param  mixed  $data
      * @return string
      */
     private function toJson($data)
@@ -100,7 +99,7 @@ class Logger
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      * @return array
      */
     private function serialize(array $data)
@@ -113,19 +112,19 @@ class Logger
     }
 
     /**
-     * @param array $data
+     * @param  array  $data
      */
     private function sanitise(array &$data)
     {
         $name = isset($data['object']) ? $data['object'] : null;
 
         /** Stripe webhooks contain an object key that is not a string. */
-        if (!is_string($name)) {
+        if (! is_string($name)) {
             return;
         }
 
         foreach ($this->exclude($data['object']) as $path) {
-            if (!$value = Arr::get($data, $path)) {
+            if (! $value = Arr::get($data, $path)) {
                 continue;
             }
 
@@ -140,7 +139,7 @@ class Logger
     /**
      * Get the paths to exclude from logging.
      *
-     * @param mixed $name
+     * @param  mixed  $name
      * @return array
      */
     private function exclude($name)

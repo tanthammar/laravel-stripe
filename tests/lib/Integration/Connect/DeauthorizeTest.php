@@ -28,8 +28,6 @@ use Stripe\StripeObject;
 
 class DeauthorizeTest extends TestCase
 {
-
-
     public function test()
     {
         Event::fake();
@@ -43,11 +41,13 @@ class DeauthorizeTest extends TestCase
         Stripe::assertInvoked(OAuth::class, 'deauthorize', function ($params, $options) use ($account) {
             $this->assertSame(['stripe_user_id' => $account->id], $params, 'params');
             $this->assertSame(['foo' => 'bar'], $options, 'options');
+
             return true;
         });
 
         Event::assertDispatched(AccountDeauthorized::class, function ($event) use ($account) {
             $this->assertTrue($account->is($event->account), 'event account');
+
             return true;
         });
     }
@@ -66,6 +66,7 @@ class DeauthorizeTest extends TestCase
         Stripe::assertInvoked(OAuth::class, 'deauthorize', function ($params, $options) use ($account) {
             $this->assertSame(['stripe_user_id' => $account->id], $params, 'params');
             $this->assertSame(['foo' => 'bar'], $options, 'options');
+
             return true;
         });
 

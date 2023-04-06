@@ -31,9 +31,9 @@ use Stripe\Event;
 
 class Processor implements ProcessorInterface
 {
+    public const EVENT_PREFIX = 'stripe.webhooks';
 
-    const EVENT_PREFIX = 'stripe.webhooks';
-    const CONNECT_EVENT_PREFIX = 'stripe.connect.webhooks';
+    public const CONNECT_EVENT_PREFIX = 'stripe.connect.webhooks';
 
     /**
      * @var Bus
@@ -58,10 +58,10 @@ class Processor implements ProcessorInterface
     /**
      * Processor constructor.
      *
-     * @param Bus $queue
-     * @param Events $events
-     * @param AdapterInterface $accounts
-     * @param Model $model
+     * @param  Bus  $queue
+     * @param  Events  $events
+     * @param  AdapterInterface  $accounts
+     * @param  Model  $model
      */
     public function __construct(
         Bus $queue,
@@ -76,9 +76,9 @@ class Processor implements ProcessorInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function receive(Event $event)
+    public function receive(Event $event): void
     {
         $data = $event->jsonSerialize();
 
@@ -90,8 +90,8 @@ class Processor implements ProcessorInterface
         );
 
         /** Get the queue config for this specific event.  */
-        $accountId = isset($event['account']) ? $event['account'] : null;
-        $queue = Config::webhookQueue($event->type, !!$accountId);
+        $accountId = data_get($event, 'account');
+        $queue = Config::webhookQueue($event->type, (bool) $accountId);
 
         /** Dispatch a job to asynchronously process the webhook. */
         $job = new ProcessWebhook($model, $data);
@@ -101,9 +101,9 @@ class Processor implements ProcessorInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
-    public function didReceive(Event $event)
+    public function didReceive(Event $event): bool
     {
         return $this->model->newQuery()->whereKey($event->id)->exists();
     }
@@ -120,17 +120,13 @@ class Processor implements ProcessorInterface
      * - `stripe.webhooks:payment_intent`
      * - `stripe.webhooks:payment_intent.succeeded`
      *
-     * However, if the event is a Connect webhook, we dispatch:
+     * However, if the event is a "Connect" webhook, we dispatch:
      *
      * - `stripe.connect.webhooks`
      * - `stripe.connect.webhooks:payment_intent`
      * - `stripe.connect.webhooks:payment_intent.succeeded`
-     *
-     * @param Event $webhook
-     * @param StripeEvent|mixed $model
-     * @return void
      */
-    public function dispatch(Event $webhook, $model)
+    public function dispatch(Event $webhook, ?StripeEvent $model = null): void
     {
         if ($accountId = Arr::get($webhook, 'account')) {
             $this->dispatchConnect($webhook, $this->accounts->find($accountId), $model);
@@ -144,14 +140,8 @@ class Processor implements ProcessorInterface
         }
     }
 
-    /**
-     * Dispatch a webhook for the application's Stripe account.
-     *
-     * @param Event $event
-     * @param $model
-     * @return void
-     */
-    protected function dispatchAccount(Event $event, $model)
+    /** Dispatch a webhook for the application's Stripe account. */
+    protected function dispatchAccount(Event $event, mixed $model): void
     {
         $webhook = new Webhook(
             $event,
@@ -159,21 +149,13 @@ class Processor implements ProcessorInterface
             Config::webhookQueue($event->type)
         );
 
-        foreach ($this->eventsFor($event->type) as $name) {
+        foreach ($this->eventsFor($event->type, false) as $name) {
             $this->events->dispatch($name, $webhook);
         }
     }
 
-    /**
-     * Dispatch a webhook for a Stripe Connect account.
-     *
-     * @param Event $event
-     * @param AccountInterface|null $account
-     * @param StripeEvent|mixed $model
-     * @return void
-     * @todo change method signature for PHP7.
-     */
-    protected function dispatchConnect(Event $event, AccountInterface $account = null, $model = null)
+    /** Dispatch a webhook for a Stripe Connect account. */
+    protected function dispatchConnect(Event $event, ?AccountInterface $account = null, mixed $model = null): void
     {
         $webhook = new ConnectWebhook(
             $event,
@@ -187,14 +169,8 @@ class Processor implements ProcessorInterface
         }
     }
 
-    /**
-     * Get event names for the specified webhook.
-     *
-     * @param string $type
-     * @param bool $connect
-     * @return string[]
-     */
-    protected function eventsFor($type, $connect = false)
+    /** Get event names for the specified webhook. */
+    protected function eventsFor(string $type, bool $connect): array
     {
         $prefix = $connect ? static::CONNECT_EVENT_PREFIX : static::EVENT_PREFIX;
 
@@ -204,5 +180,4 @@ class Processor implements ProcessorInterface
             sprintf('%s:%s', $prefix, $type),
         ];
     }
-
 }

@@ -19,7 +19,6 @@ namespace CloudCreativity\LaravelStripe\Contracts\Connect;
 
 interface AccountOwnerInterface
 {
-
     /**
      * Get the column name of the unique identifier for the Stripe account owner.
      *

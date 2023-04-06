@@ -27,7 +27,6 @@ use Illuminate\Support\Facades\Event;
 
 class ProcessTest extends TestCase
 {
-
     /**
      * @return void
      */
@@ -63,6 +62,7 @@ class ProcessTest extends TestCase
                     $this->assertNotInstanceOf(ConnectWebhook::class, $webhook, 'not connect');
                     $this->assertEquals(\Stripe\Event::constructFrom($payload), $webhook->webhook, "{$name}: webhook");
                     $this->assertTrue($model->is($webhook->model), "{$name}: model");
+
                     return true;
                 }
             );
@@ -103,6 +103,7 @@ class ProcessTest extends TestCase
                     $this->assertEquals(\Stripe\Event::constructFrom($payload), $webhook->webhook, "{$name}: webhook");
                     $this->assertTrue($model->account->is($webhook->account), "{$name}: account");
                     $this->assertTrue($model->is($webhook->model), "{$name}: model");
+
                     return true;
                 }
             );

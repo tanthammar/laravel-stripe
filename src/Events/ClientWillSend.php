@@ -21,7 +21,6 @@ use Illuminate\Contracts\Support\Arrayable;
 
 class ClientWillSend implements Arrayable
 {
-
     /**
      * @var string
      */

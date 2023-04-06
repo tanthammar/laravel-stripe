@@ -21,7 +21,6 @@ use Closure;
 
 class LaravelStripe
 {
-
     /**
      * Stripe on storage of their ids:
      *
@@ -84,7 +83,7 @@ class LaravelStripe
     /**
      * Set the fully-qualified class name of the Connect accounts adapter.
      *
-     * @param string $fqn
+     * @param  string  $fqn
      * @return LaravelStripe
      */
     public static function connect($fqn)
@@ -97,7 +96,7 @@ class LaravelStripe
     /**
      * Set the fully-qualified class name of the OAuth state parameter provider.
      *
-     * @param string $fqn
+     * @param  string  $fqn
      * @return LaravelStripe
      */
     public static function connectState($fqn)
@@ -110,7 +109,7 @@ class LaravelStripe
     /**
      * Set the fully-qualified class name of the Webhook processor.
      *
-     * @param string $fqn
+     * @param  string  $fqn
      * @return LaravelStripe
      */
     public static function webhooks($fqn)
@@ -123,7 +122,7 @@ class LaravelStripe
     /**
      * Set the resolver for the Stripe owner of the current request.
      *
-     * @param Closure|null $closure
+     * @param  Closure|null  $closure
      * @return LaravelStripe
      */
     public static function currentOwnerResolver(Closure $closure = null)

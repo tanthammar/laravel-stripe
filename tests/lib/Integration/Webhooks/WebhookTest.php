@@ -24,7 +24,6 @@ use Stripe\Event;
 
 class WebhookTest extends TestCase
 {
-
     public function test()
     {
         $webhook = Event::constructFrom($this->stub('webhook'));

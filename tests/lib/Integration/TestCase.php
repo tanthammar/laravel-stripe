@@ -40,14 +40,14 @@ abstract class TestCase extends BaseTestCase
         Carbon::setTestNow('now');
 
         /** Setup the test database */
-        $this->app['migrator']->path(__DIR__ . '/../../database/migrations');
-        $this->app->make(ModelFactory::class)->load(__DIR__ . '/../../database/factories');
+        $this->app['migrator']->path(__DIR__.'/../../database/migrations');
+        $this->app->make(ModelFactory::class)->load(__DIR__.'/../../database/factories');
 
         if (method_exists($this, 'withoutMockingConsoleOutput')) {
             $this->withoutMockingConsoleOutput();
         }
 
-        $this->app['view']->addNamespace('test', __DIR__ . '/../../resources/views');
+        $this->app['view']->addNamespace('test', __DIR__.'/../../resources/views');
 
         $this->artisan('migrate', ['--database' => 'testbench']);
     }
@@ -84,7 +84,7 @@ abstract class TestCase extends BaseTestCase
      * To ensure this package works with Cashier, we also include
      * Cashier.
      *
-     * @param Application $app
+     * @param  Application  $app
      * @return array
      */
     protected function getPackageProviders($app)
@@ -98,7 +98,7 @@ abstract class TestCase extends BaseTestCase
     /**
      * Get facade aliases.
      *
-     * @param Application $app
+     * @param  Application  $app
      * @return array
      */
     protected function getPackageAliases($app)
@@ -111,13 +111,13 @@ abstract class TestCase extends BaseTestCase
     /**
      * Setup the test environment.
      *
-     * @param Application $app
+     * @param  Application  $app
      * @return void
      */
     protected function getEnvironmentSetUp($app)
     {
         /** Include our default config. */
-        $app['config']->set('stripe', require __DIR__ . '/../../../config/stripe.php');
+        $app['config']->set('stripe', require __DIR__.'/../../../config/stripe.php');
 
         /** Override views to use our test namespace */
         $app['config']->set('stripe.connect.views', [
@@ -128,22 +128,22 @@ abstract class TestCase extends BaseTestCase
         /** Setup a test database. */
         $app['config']->set('database.default', 'testbench');
         $app['config']->set('database.connections.testbench', [
-            'driver'   => 'sqlite',
+            'driver' => 'sqlite',
             'database' => ':memory:',
-            'prefix'   => '',
+            'prefix' => '',
         ]);
     }
 
     /**
      * Load a stub.
      *
-     * @param string $name
+     * @param  string  $name
      * @return array
      */
     protected function stub($name)
     {
         return json_decode(
-            file_get_contents(__DIR__ . '/../../stubs/' . $name . '.json'),
+            file_get_contents(__DIR__.'/../../stubs/'.$name.'.json'),
             true
         );
     }

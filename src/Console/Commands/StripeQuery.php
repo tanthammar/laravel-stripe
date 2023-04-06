@@ -28,18 +28,17 @@ use Stripe\Exception\ApiErrorException;
 
 class StripeQuery extends Command
 {
-
     /**
      * The name and signature of the console command.
      *
      * @var string
      */
-    protected $signature = "stripe:query
+    protected $signature = 'stripe:query
         {resource : The resource name }
         {id? : The resource id }
         {--A|account= : The connected account }
         {--e|expand=* : The paths to expand }
-    ";
+    ';
 
     /**
      * The console command description.
@@ -51,7 +50,7 @@ class StripeQuery extends Command
     /**
      * Execute the console command.
      *
-     * @param StripeService $stripe
+     * @param  StripeService  $stripe
      * @return int
      */
     public function handle(StripeService $stripe)
@@ -81,9 +80,11 @@ class StripeQuery extends Command
                 $this->query($repository, $resource);
         } catch (UnexpectedValueException $ex) {
             $this->error($ex->getMessage());
+
             return 1;
         } catch (ApiErrorException $ex) {
-            $this->error('Stripe Error: ' . $ex->getMessage());
+            $this->error('Stripe Error: '.$ex->getMessage());
+
             return 2;
         }
 
@@ -93,15 +94,16 @@ class StripeQuery extends Command
     }
 
     /**
-     * @param AbstractRepository $repository
-     * @param string $resource
-     * @param string $id
+     * @param  AbstractRepository  $repository
+     * @param  string  $resource
+     * @param  string  $id
      * @return JsonSerializable
+     *
      * @throws ApiErrorException
      */
     private function retrieve(AbstractRepository $repository, $resource, $id): JsonSerializable
     {
-        if (!method_exists($repository, 'retrieve')) {
+        if (! method_exists($repository, 'retrieve')) {
             throw new UnexpectedValueException("Retrieving resource '{$resource}' is not supported.");
         }
 
@@ -111,10 +113,12 @@ class StripeQuery extends Command
     }
 
     /**
-     * @param AbstractRepository $repository
+     * @param  AbstractRepository  $repository
      * @param $resource
      * @return JsonSerializable
+     *
      * @throws ApiErrorException
+     *
      * @todo add support for pagination.
      */
     private function query(AbstractRepository $repository, $resource): JsonSerializable
@@ -123,7 +127,7 @@ class StripeQuery extends Command
             return $repository->retrieve();
         }
 
-        if (!method_exists($repository, 'all')) {
+        if (! method_exists($repository, 'all')) {
             throw new UnexpectedValueException("Querying resource '{$resource}' is not supported.");
         }
 
@@ -131,5 +135,4 @@ class StripeQuery extends Command
 
         return $repository->all();
     }
-
 }

@@ -29,7 +29,6 @@ use Stripe\Event;
 
 class ProcessWebhook implements ShouldQueue
 {
-
     use InteractsWithQueue, SerializesModels, Queueable;
 
     /**
@@ -45,9 +44,9 @@ class ProcessWebhook implements ShouldQueue
     /**
      * ProcessWebhook constructor.
      *
-     * @param StripeEvent|Model $event
+     * @param  StripeEvent|Model  $event
      *      the stored Stripe event model.
-     * @param array $payload
+     * @param  array  $payload
      *      the payload received from Stripe
      */
     public function __construct($event, array $payload)
@@ -59,9 +58,10 @@ class ProcessWebhook implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param ProcessorInterface $processor
-     * @param Logger $log
+     * @param  ProcessorInterface  $processor
+     * @param  Logger  $log
      * @return void
+     *
      * @throws \Throwable
      */
     public function handle(ProcessorInterface $processor, Logger $log)
@@ -77,5 +77,4 @@ class ProcessWebhook implements ShouldQueue
             $processor->dispatch($webhook, $this->event);
         });
     }
-
 }

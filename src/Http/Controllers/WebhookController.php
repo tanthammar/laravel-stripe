@@ -26,7 +26,6 @@ use Stripe\Event;
 
 class WebhookController extends Controller
 {
-
     /**
      * @var Logger
      */
@@ -35,7 +34,7 @@ class WebhookController extends Controller
     /**
      * WebhookController constructor.
      *
-     * @param Logger $log
+     * @param  Logger  $log
      */
     public function __construct(Logger $log)
     {
@@ -45,14 +44,14 @@ class WebhookController extends Controller
     /**
      * Handle a Stripe webhook.
      *
-     * @param Request $request
-     * @param ProcessorInterface $processor
+     * @param  Request  $request
+     * @param  ProcessorInterface  $processor
      * @return Response
      */
     public function __invoke(Request $request, ProcessorInterface $processor)
     {
         if ('event' !== $request->json('object') || empty($request->json('id'))) {
-            $this->log->log("Invalid Stripe webhook payload.");
+            $this->log->log('Invalid Stripe webhook payload.');
 
             return response()->json(['error' => 'Invalid JSON payload.'], Response::HTTP_BAD_REQUEST);
         }
@@ -62,7 +61,7 @@ class WebhookController extends Controller
         /** Only process the webhook if it has not already been processed. */
         if ($processor->didReceive($event)) {
             $this->log->log(sprintf(
-                "Ignoring Stripe webhook %s for event %s, as it is already processed.",
+                'Ignoring Stripe webhook %s for event %s, as it is already processed.',
                 $event->id,
                 $event->type
             ));
@@ -73,5 +72,4 @@ class WebhookController extends Controller
 
         return response('', Response::HTTP_NO_CONTENT);
     }
-
 }

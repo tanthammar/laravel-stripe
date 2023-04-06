@@ -21,7 +21,6 @@ use LogicException;
 
 class AccountNotConnectedException extends LogicException
 {
-
     /**
      * @var string
      */
@@ -31,7 +30,7 @@ class AccountNotConnectedException extends LogicException
      * AccountNotConnected constructor.
      *
      * @param $accountId
-     * @param \Exception|null $previous
+     * @param  \Exception|null  $previous
      */
     public function __construct($accountId, \Exception $previous = null)
     {

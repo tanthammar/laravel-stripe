@@ -22,7 +22,6 @@ use Illuminate\Queue\SerializesModels;
 
 class AccountDeauthorized
 {
-
     use SerializesModels;
 
     /**
@@ -33,7 +32,7 @@ class AccountDeauthorized
     /**
      * AccountDeauthorized constructor.
      *
-     * @param AccountInterface $account
+     * @param  AccountInterface  $account
      */
     public function __construct(AccountInterface $account)
     {

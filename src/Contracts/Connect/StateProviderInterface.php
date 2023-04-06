@@ -19,7 +19,6 @@ namespace CloudCreativity\LaravelStripe\Contracts\Connect;
 
 interface StateProviderInterface
 {
-
     /**
      * Get the state value.
      *
@@ -30,9 +29,8 @@ interface StateProviderInterface
     /**
      * Is the provided state valid?
      *
-     * @param string $value
+     * @param  string  $value
      * @return bool
      */
     public function check($value);
-
 }

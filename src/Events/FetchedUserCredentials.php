@@ -24,7 +24,6 @@ use Stripe\StripeObject;
 
 class FetchedUserCredentials
 {
-
     use SerializesModels;
 
     /**
@@ -45,9 +44,9 @@ class FetchedUserCredentials
     /**
      * FetchedUserCredentials constructor.
      *
-     * @param AccountInterface $account
-     * @param AccountOwnerInterface $owner
-     * @param StripeObject $token
+     * @param  AccountInterface  $account
+     * @param  AccountOwnerInterface  $owner
+     * @param  StripeObject  $token
      */
     public function __construct(AccountInterface $account, AccountOwnerInterface $owner, StripeObject $token)
     {

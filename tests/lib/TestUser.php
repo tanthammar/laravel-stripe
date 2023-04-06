@@ -23,7 +23,6 @@ use Illuminate\Foundation\Auth\User;
 
 class TestUser extends User implements AccountOwnerInterface
 {
-
     use OwnsStripeAccounts;
 
     /**

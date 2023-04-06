@@ -29,7 +29,6 @@ use Illuminate\Queue\SerializesModels;
 
 class FetchUserCredentials implements ShouldQueue
 {
-
     use InteractsWithQueue, SerializesModels, Queueable;
 
     /**
@@ -50,9 +49,9 @@ class FetchUserCredentials implements ShouldQueue
     /**
      * FetchUserCredentials constructor.
      *
-     * @param string $code
-     * @param string $scope
-     * @param AccountOwnerInterface $owner
+     * @param  string  $code
+     * @param  string  $scope
+     * @param  AccountOwnerInterface  $owner
      */
     public function __construct($code, $scope, AccountOwnerInterface $owner)
     {
@@ -64,8 +63,8 @@ class FetchUserCredentials implements ShouldQueue
     /**
      * Execute the job.
      *
-     * @param Authorizer $authorizer
-     * @param AdapterInterface $adapter
+     * @param  Authorizer  $authorizer
+     * @param  AdapterInterface  $adapter
      * @return void
      */
     public function handle(Authorizer $authorizer, AdapterInterface $adapter)

@@ -27,18 +27,17 @@ use Illuminate\Support\Facades\Route;
 
 class StripeService
 {
-
     /**
      * Register a webhook endpoint.
      *
-     * @param string $uri
-     * @param string $signingSecret
+     * @param  string  $uri
+     * @param  string  $signingSecret
      *      the key of the signing secret in the `stripe.webhooks.signing_secrets` config.
      * @return \Illuminate\Routing\Route
      */
     public function webhook($uri, $signingSecret)
     {
-        return Route::post($uri, '\\' . WebhookController::class)->middleware(
+        return Route::post($uri, '\\'.WebhookController::class)->middleware(
             "stripe.verify:{$signingSecret}"
         );
     }
@@ -51,7 +50,7 @@ class StripeService
      */
     public function oauth($uri)
     {
-        return Route::get($uri, '\\' . OAuthController::class);
+        return Route::get($uri, '\\'.OAuthController::class);
     }
 
     /**
@@ -67,8 +66,9 @@ class StripeService
     /**
      * Access a connected account.
      *
-     * @param AccountInterface|string $accountId
+     * @param  AccountInterface|string  $accountId
      * @return Connect\Connector
+     *
      * @throws AccountNotConnectedException
      */
     public function connect($accountId)
@@ -100,7 +100,7 @@ class StripeService
     /**
      * Create a Stripe Connect OAuth link.
      *
-     * @param array|null $options
+     * @param  array|null  $options
      * @return AuthorizeUrl
      */
     public function authorizeUrl(array $options = null)
@@ -111,13 +111,12 @@ class StripeService
     /**
      * Log a Stripe object, sanitising any sensitive data.
      *
-     * @param string $message
-     * @param mixed $data
-     * @param array $context
+     * @param  string  $message
+     * @param  mixed  $data
+     * @param  array  $context
      */
     public function log($message, $data, array $context = [])
     {
         app('stripe.log')->encode($message, $data, $context);
     }
-
 }

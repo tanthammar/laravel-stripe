@@ -23,13 +23,12 @@ use JsonSerializable;
 
 class LogClientResults
 {
-
     private $log;
 
     /**
      * LogClientResults constructor.
      *
-     * @param Logger $log
+     * @param  Logger  $log
      */
     public function __construct(Logger $log)
     {
@@ -39,7 +38,7 @@ class LogClientResults
     /**
      * Handle the event.
      *
-     * @param ClientReceivedResult $event
+     * @param  ClientReceivedResult  $event
      * @return void
      */
     public function handle(ClientReceivedResult $event)
@@ -47,14 +46,13 @@ class LogClientResults
         $message = "Result for {$event->name}.{$event->method}";
         $context = $event->toArray();
 
-        if (!$event->result instanceof JsonSerializable) {
+        if (! $event->result instanceof JsonSerializable) {
             $this->log->log($message, $context);
+
             return;
         }
 
         unset($context['result']);
         $this->log->encode($message, $event->result, $context);
     }
-
-
 }

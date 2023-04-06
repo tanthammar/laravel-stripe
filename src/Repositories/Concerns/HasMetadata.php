@@ -23,11 +23,10 @@ use CloudCreativity\LaravelStripe\Repositories\AbstractRepository;
 
 trait HasMetadata
 {
-
     /**
      * Set metadata.
      *
-     * @param iterable $meta
+     * @param  iterable  $meta
      * @return $this
      */
     public function metadata(iterable $meta): self

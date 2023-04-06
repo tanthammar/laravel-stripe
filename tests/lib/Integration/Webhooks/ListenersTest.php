@@ -27,7 +27,6 @@ use Stripe\Event;
 
 class ListenersTest extends TestCase
 {
-
     /**
      * @return void
      */
@@ -59,6 +58,7 @@ class ListenersTest extends TestCase
             $this->assertSame($webhook, $job->webhook);
             $this->assertSame('my_queue', $job->queue, 'queue');
             $this->assertSame('my_connection', $job->connection, 'connection');
+
             return true;
         });
     }
@@ -89,6 +89,7 @@ class ListenersTest extends TestCase
             $this->assertSame($webhook, $job->webhook);
             $this->assertNull($job->queue, 'queue');
             $this->assertNull($job->connection, 'connection');
+
             return true;
         });
     }

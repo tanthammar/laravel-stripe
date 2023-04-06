@@ -29,12 +29,10 @@ use Illuminate\Database\Eloquent\Model;
  */
 class TestAccount extends Model implements AccountInterface
 {
-
     /**
      * @var bool
      */
     public $incrementing = false;
 
     use ConnectedAccount;
-
 }

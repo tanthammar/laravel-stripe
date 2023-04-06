@@ -19,7 +19,6 @@ namespace CloudCreativity\LaravelStripe\Connect;
 
 trait ConnectedAccount
 {
-
     /**
      * @return Connector
      */
@@ -53,7 +52,7 @@ trait ConnectedAccount
      */
     public function getStripeAccountIdentifierName()
     {
-        if (!$this->incrementing) {
+        if (! $this->incrementing) {
             return $this->getKeyName();
         }
 
@@ -117,5 +116,4 @@ trait ConnectedAccount
     {
         return $this->getKeyName() === $this->getStripeAccountIdentifierName();
     }
-
 }

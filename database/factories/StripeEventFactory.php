@@ -21,7 +21,6 @@ use Faker\Generator as Faker;
 use Illuminate\Database\Eloquent\Factory;
 
 /** @var Factory $factory */
-
 $factory->define(StripeEvent::class, function (Faker $faker) {
     return [
         'id' => $faker->unique()->lexify('evt_????????????????'),

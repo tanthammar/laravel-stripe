@@ -24,11 +24,14 @@ use InvalidArgumentException;
 
 abstract class AbstractRepository
 {
-
     const PARAM_EXPAND = 'expand';
+
     const PARAM_ID = 'id';
+
     const PARAM_METADATA = 'metadata';
+
     const OPT_IDEMPOTENCY_KEY = 'idempotency_key';
+
     const OPT_STRIPE_ACCOUNT = 'stripe_account';
 
     /**
@@ -56,8 +59,8 @@ abstract class AbstractRepository
     /**
      * AbstractRepository constructor.
      *
-     * @param Client $client
-     * @param string|null $accountId
+     * @param  Client  $client
+     * @param  string|null  $accountId
      */
     public function __construct(Client $client, $accountId = null)
     {
@@ -84,12 +87,12 @@ abstract class AbstractRepository
     /**
      * Make the next request idempotent.
      *
-     * @param string $value
+     * @param  string  $value
      * @return $this
      */
     public function idempotent($value): self
     {
-        if (!is_string($value) || empty($value)) {
+        if (! is_string($value) || empty($value)) {
             throw new InvalidArgumentException('Expecting a non-empty string.');
         }
 
@@ -101,8 +104,8 @@ abstract class AbstractRepository
     /**
      * Set a parameter.
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string  $key
+     * @param  mixed  $value
      * @return $this
      */
     public function param(string $key, $value): self
@@ -115,7 +118,7 @@ abstract class AbstractRepository
     /**
      * Set many parameters.
      *
-     * @param iterable $values
+     * @param  iterable  $values
      * @return $this
      */
     public function params(iterable $values): self
@@ -130,8 +133,8 @@ abstract class AbstractRepository
     /**
      * Set an option.
      *
-     * @param string $key
-     * @param mixed $value
+     * @param  string  $key
+     * @param  mixed  $value
      * @return $this
      */
     public function option(string $key, $value): self
@@ -144,7 +147,7 @@ abstract class AbstractRepository
     /**
      * Set many options.
      *
-     * @param iterable $values
+     * @param  iterable  $values
      * @return $this
      */
     public function options(iterable $values): self
@@ -159,12 +162,12 @@ abstract class AbstractRepository
     /**
      * Set keys to expand.
      *
-     * @param string ...$keys
+     * @param  string  ...$keys
      * @return $this
      */
     public function expand(string ...$keys): self
     {
-        if (!empty($keys)) {
+        if (! empty($keys)) {
             $this->param(self::PARAM_EXPAND, $keys);
         }
 
@@ -179,8 +182,8 @@ abstract class AbstractRepository
      * - The static call can be stubbed out in tests.
      * - Events are dispatched.
      *
-     * @param string $method
-     * @param mixed ...$args
+     * @param  string  $method
+     * @param  mixed  ...$args
      * @return mixed
      */
     protected function send(string $method, ...$args)
@@ -205,5 +208,4 @@ abstract class AbstractRepository
         $this->params = [];
         $this->options = collect($this->options)->only(self::OPT_STRIPE_ACCOUNT)->all();
     }
-
 }

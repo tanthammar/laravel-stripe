@@ -29,11 +29,10 @@ use Stripe\Collection as StripeCollection;
  */
 trait All
 {
-
     /**
      * Query all resources.
      *
-     * @param iterable|array $params
+     * @param  iterable|array  $params
      * @return StripeCollection
      */
     public function all($params = []): StripeCollection
@@ -46,7 +45,7 @@ trait All
     /**
      * Query all resources, and return a Laravel collection.
      *
-     * @param iterable|array $params
+     * @param  iterable|array  $params
      * @return IlluminateCollection
      */
     public function collect($params = []): IlluminateCollection

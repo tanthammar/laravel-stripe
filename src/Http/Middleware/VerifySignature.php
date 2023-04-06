@@ -26,7 +26,6 @@ use Stripe\Exception\SignatureVerificationException;
 
 class VerifySignature
 {
-
     /**
      * @var Verifier
      */
@@ -45,9 +44,9 @@ class VerifySignature
     /**
      * VerifySignature constructor.
      *
-     * @param Verifier $verifier
-     * @param Dispatcher $events
-     * @param Logger $log
+     * @param  Verifier  $verifier
+     * @param  Dispatcher  $events
+     * @param  Logger  $log
      */
     public function __construct(Verifier $verifier, Dispatcher $events, Logger $log)
     {
@@ -58,8 +57,8 @@ class VerifySignature
 
     /**
      * @param $request
-     * @param \Closure $next
-     * @param string $signingSecret
+     * @param  \Closure  $next
+     * @param  string  $signingSecret
      * @return mixed
      */
     public function handle($request, \Closure $next, $signingSecret = 'default')
@@ -75,7 +74,7 @@ class VerifySignature
                 $signingSecret
             );
 
-            $this->log->log("Stripe webhook signature verification failed.", $event->toArray());
+            $this->log->log('Stripe webhook signature verification failed.', $event->toArray());
             $this->events->dispatch($event);
 
             return response()->json(['error' => 'Invalid signature.'], Response::HTTP_BAD_REQUEST);
@@ -85,5 +84,4 @@ class VerifySignature
 
         return $next($request);
     }
-
 }

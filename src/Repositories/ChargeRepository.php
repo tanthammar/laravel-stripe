@@ -24,7 +24,6 @@ use Stripe\Charge;
 
 class ChargeRepository extends AbstractRepository
 {
-
     use Concerns\All;
     use Concerns\Retrieve;
     use Concerns\Update;
@@ -34,9 +33,9 @@ class ChargeRepository extends AbstractRepository
      *
      * Both currency and amount are required parameters.
      *
-     * @param string $currency
-     * @param int $amount
-     * @param iterable|array $params
+     * @param  string  $currency
+     * @param  int  $amount
+     * @param  iterable|array  $params
      *      additional optional parameters.
      * @return Charge
      */
@@ -56,7 +55,7 @@ class ChargeRepository extends AbstractRepository
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function fqn(): string
     {

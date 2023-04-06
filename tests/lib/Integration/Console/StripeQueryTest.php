@@ -26,10 +26,9 @@ use Stripe\Collection;
 
 class StripeQueryTest extends TestCase
 {
-
     /**
-     * @param string $fqn
-     * @param string $resource
+     * @param  string  $fqn
+     * @param  string  $resource
      * @dataProvider classProvider
      */
     public function testAll(string $fqn, string $resource): void
@@ -43,6 +42,7 @@ class StripeQueryTest extends TestCase
         Stripe::assertInvoked($fqn, 'all', function ($params, $options) {
             $this->assertNull($params, 'params');
             $this->assertNull($options, 'options');
+
             return true;
         });
     }
@@ -61,13 +61,14 @@ class StripeQueryTest extends TestCase
         Stripe::assertInvoked(Charge::class, 'all', function ($params, $options) {
             $this->assertNull($params, 'params');
             $this->assertNull($options, 'options');
+
             return true;
         });
     }
 
     /**
-     * @param string $fqn
-     * @param string $resource
+     * @param  string  $fqn
+     * @param  string  $resource
      * @dataProvider classProvider
      */
     public function testAllConnect(string $fqn, string $resource): void
@@ -88,7 +89,7 @@ class StripeQueryTest extends TestCase
             $this->assertNull($params, 'params');
 
             $this->assertSame([
-                'stripe_account' => $account->getStripeAccountIdentifier()
+                'stripe_account' => $account->getStripeAccountIdentifier(),
             ], $options, 'options');
 
             return true;
@@ -96,8 +97,8 @@ class StripeQueryTest extends TestCase
     }
 
     /**
-     * @param string $fqn
-     * @param string $resource
+     * @param  string  $fqn
+     * @param  string  $resource
      * @dataProvider classProvider
      */
     public function testRetrieveAndExpand(string $fqn, string $resource): void
@@ -118,6 +119,7 @@ class StripeQueryTest extends TestCase
                 'expand' => ['foo', 'bar'],
             ], $params, 'params');
             $this->assertNull($options, 'options');
+
             return true;
         });
     }
@@ -143,6 +145,7 @@ class StripeQueryTest extends TestCase
                 'expand' => ['foo', 'bar'],
             ], $params, 'params');
             $this->assertNull($options, 'options');
+
             return true;
         });
     }
@@ -171,7 +174,7 @@ class StripeQueryTest extends TestCase
             $this->assertSame(compact('id'), $params, 'params');
 
             $this->assertSame([
-                'stripe_account' => $account->getStripeAccountIdentifier()
+                'stripe_account' => $account->getStripeAccountIdentifier(),
             ], $options, 'options');
 
             return true;
@@ -191,6 +194,7 @@ class StripeQueryTest extends TestCase
 
         Stripe::assertInvoked(Balance::class, 'retrieve', function ($options) {
             $this->assertNull($options, 'options');
+
             return true;
         });
     }

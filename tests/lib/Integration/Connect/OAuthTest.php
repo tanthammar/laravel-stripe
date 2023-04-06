@@ -31,7 +31,6 @@ use Illuminate\Support\Facades\Route;
 
 class OAuthTest extends TestCase
 {
-
     /**
      * @var User
      */
@@ -99,13 +98,14 @@ class OAuthTest extends TestCase
 
         $this->withoutExceptionHandling()
             ->actingAs($this->user)
-            ->get('/test/authorize?' . http_build_query($params))
+            ->get('/test/authorize?'.http_build_query($params))
             ->assertStatus(200)
             ->assertViewIs('test::oauth.success')
             ->assertViewHas($expected);
 
         Queue::assertPushedOn('my_queue', FetchUserCredentials::class, function ($job) {
             $this->assertSame('my_connection', $job->connection, 'job connection');
+
             return true;
         });
     }
@@ -124,7 +124,7 @@ class OAuthTest extends TestCase
         ];
 
         $this->actingAs($this->user)
-            ->get('/test/authorize?' . http_build_query($params))
+            ->get('/test/authorize?'.http_build_query($params))
             ->assertStatus(200);
 
         $this->app['events']->listen(OAuthSuccess::class, function (OAuthSuccess $event) {
@@ -167,7 +167,7 @@ class OAuthTest extends TestCase
         });
 
         $this->withoutExceptionHandling()
-            ->get('/test/authorize?' . http_build_query($params))
+            ->get('/test/authorize?'.http_build_query($params))
             ->assertStatus(422)
             ->assertViewIs('test::oauth.error')
             ->assertViewHas($expected);
@@ -200,7 +200,7 @@ class OAuthTest extends TestCase
 
         $this->withoutExceptionHandling()
             ->actingAs($this->user)
-            ->get('/test/authorize?' . http_build_query($params))
+            ->get('/test/authorize?'.http_build_query($params))
             ->assertStatus(403)
             ->assertViewIs('test::oauth.error')
             ->assertViewHas($expected);
@@ -219,14 +219,13 @@ class OAuthTest extends TestCase
         ];
     }
 
-
     /**
      * Checks that we handle any missing parameters from Stripe.
      *
      * In theory a user should never encounter this, as Stripe will send what
      * we expect it to send. But it is good to handle the scenario just in case.
      *
-     * @param string $missing
+     * @param  string  $missing
      * @dataProvider invalidProvider
      */
     public function testInvalid($missing)
@@ -238,7 +237,7 @@ class OAuthTest extends TestCase
         ])->forget($missing)->all();
 
         $this->actingAs($this->user)
-            ->get('/test/authorize?' . http_build_query($params))
+            ->get('/test/authorize?'.http_build_query($params))
             ->assertStatus(400);
 
         Queue::assertNotPushed(FetchUserCredentials::class);

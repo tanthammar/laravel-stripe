@@ -28,7 +28,6 @@ use Stripe\Account;
 
 class Adapter implements AdapterInterface
 {
-
     /**
      * @var Model|ConnectedAccount
      */
@@ -37,11 +36,11 @@ class Adapter implements AdapterInterface
     /**
      * ConnectedAccounts constructor.
      *
-     * @param Model $model
+     * @param  Model  $model
      */
     public function __construct(Model $model)
     {
-        if (!$model instanceof AccountInterface) {
+        if (! $model instanceof AccountInterface) {
             throw new InvalidArgumentException('Expecting a connected account model.');
         }
 
@@ -49,7 +48,7 @@ class Adapter implements AdapterInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function find($accountId)
     {
@@ -57,7 +56,7 @@ class Adapter implements AdapterInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function store($accountId, $refreshToken, $scope, AccountOwnerInterface $owner)
     {
@@ -76,11 +75,11 @@ class Adapter implements AdapterInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function update(AccountInterface $account, Account $resource)
     {
-        if (!$account instanceof $this->model) {
+        if (! $account instanceof $this->model) {
             throw new UnexpectedValueException('Unexpected Stripe account model.');
         }
 
@@ -92,11 +91,11 @@ class Adapter implements AdapterInterface
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     public function remove(AccountInterface $account)
     {
-        if (!$account instanceof $this->model) {
+        if (! $account instanceof $this->model) {
             throw new UnexpectedValueException('Unexpected Stripe account model.');
         }
 
@@ -159,5 +158,4 @@ class Adapter implements AdapterInterface
     {
         return method_exists($this->model, 'forceDelete');
     }
-
 }

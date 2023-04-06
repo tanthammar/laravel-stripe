@@ -24,7 +24,6 @@ use Stripe\PaymentIntent;
 
 class PaymentIntentRepository extends AbstractRepository
 {
-
     use Concerns\All;
     use Concerns\Retrieve;
     use Concerns\Update;
@@ -34,9 +33,9 @@ class PaymentIntentRepository extends AbstractRepository
      *
      * Both currency and amount are required parameters.
      *
-     * @param string $currency
-     * @param int $amount
-     * @param iterable|array $params
+     * @param  string  $currency
+     * @param  int  $amount
+     * @param  iterable|array  $params
      *      additional optional parameters.
      * @return PaymentIntent
      */
@@ -52,11 +51,10 @@ class PaymentIntentRepository extends AbstractRepository
     }
 
     /**
-     * @inheritDoc
+     * {@inheritDoc}
      */
     protected function fqn(): string
     {
         return PaymentIntent::class;
     }
-
 }

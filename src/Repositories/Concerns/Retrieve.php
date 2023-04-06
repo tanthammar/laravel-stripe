@@ -24,16 +24,15 @@ use Stripe\StripeObject;
 
 trait Retrieve
 {
-
     /**
      * Retrieve a Stripe object.
      *
-     * @param string $id
+     * @param  string  $id
      * @return StripeObject
      */
     public function retrieve(string $id): StripeObject
     {
-        if (!is_string($id) || empty($id)) {
+        if (! is_string($id) || empty($id)) {
             throw new InvalidArgumentException('Expecting a non-empty resource id.');
         }
 
@@ -41,5 +40,4 @@ trait Retrieve
 
         return $this->send('retrieve', $this->params, $this->options ?: null);
     }
-
 }
