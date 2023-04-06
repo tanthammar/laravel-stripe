@@ -1,6 +1,6 @@
 <?php
-/**
- * Copyright 2020 Cloud Creativity Limited
+/*
+ * Copyright 2023 Cloud Creativity Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -27,11 +27,18 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class StripeAccount extends Model implements AccountInterface
 {
+
     use ConnectedAccount;
     use SoftDeletes;
 
+    /**
+     * @var bool
+     */
     public $incrementing = false;
 
+    /**
+     * @var array
+     */
     protected $fillable = [
         'id',
         'business_profile',
@@ -51,10 +58,14 @@ class StripeAccount extends Model implements AccountInterface
         'type',
     ];
 
+    /**
+     * @var array
+     */
     protected $casts = [
         'business_profile' => 'json',
         'capabilities' => 'json',
         'charges_enabled' => 'boolean',
+        'deleted_at' => 'datetime',
         'details_submitted' => 'boolean',
         'individual' => 'json',
         'metadata' => 'json',
@@ -64,25 +75,31 @@ class StripeAccount extends Model implements AccountInterface
         'tos_acceptance' => 'json',
     ];
 
-    protected $dates = [
-        'deleted_at',
-    ];
-
-    public function events(): HasMany
+    /**
+     * @return HasMany
+     */
+    public function events()
     {
+        $model = Config::webhookModel();
+
         return $this->hasMany(
-            Config::webhookModel(),
-            Config::webhookModel()->getAccountIdentifierName(),
+            get_class($model),
+            $model->getAccountIdentifierName(),
             $this->getStripeAccountIdentifierName()
         );
     }
 
-    public function owner(): BelongsTo
+    /**
+     * @return BelongsTo
+     */
+    public function owner()
     {
+        $model = Config::connectOwner();
+
         return $this->belongsTo(
-            config('stripe.connect.owner'),
-            'owner_id',
-            config('stripe.connect.owner')->getKeyName(),
+            get_class($model),
+            $this->getStripeOwnerIdentifierName(),
+            $model->getStripeIdentifierName(),
             'owner'
         );
     }

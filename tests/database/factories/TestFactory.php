@@ -1,6 +1,6 @@
 <?php
-/**
- * Copyright 2020 Cloud Creativity Limited
+/*
+ * Copyright 2023 Cloud Creativity Limited
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -25,7 +25,7 @@ use Illuminate\Support\Str;
 $factory->define(TestAccount::class, function (Faker $faker) {
     return [
         'id' => $faker->unique()->lexify('acct_????????????'),
-        'name' => $faker->company,
+        'name' => $faker->company(),
     ];
 });
 
@@ -33,8 +33,8 @@ $factory->define(TestUser::class, function (Faker $faker) {
     static $password;
 
     return [
-        'name' => $faker->name,
-        'email' => $faker->unique()->safeEmail,
+        'name' => $faker->name(),
+        'email' => $faker->unique()->safeEmail(),
         'password' => $password ?: $password = bcrypt('secret'),
         'remember_token' => Str::random(10),
     ];
