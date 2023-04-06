@@ -75,10 +75,8 @@ class StripeAccount extends Model implements AccountInterface
         'tos_acceptance' => 'json',
     ];
 
-    /**
-     * @return HasMany
-     */
-    public function events()
+
+    public function events(): HasMany
     {
         $model = Config::webhookModel();
 
@@ -89,10 +87,8 @@ class StripeAccount extends Model implements AccountInterface
         );
     }
 
-    /**
-     * @return BelongsTo
-     */
-    public function owner()
+
+    public function owner(): BelongsTo
     {
         $model = Config::connectOwner();
 
